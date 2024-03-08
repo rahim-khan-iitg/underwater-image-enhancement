@@ -120,7 +120,65 @@ The dual function of a convex optimization problem is defined as :-
 \mathcal{L}(x,y,\lambda)=f(x)+g(y)+\lambda^T(Ax-y)\\
 \text{Dual of the problem is} \\
 \text{maximize} \enspace \mathcal{g}(y)=-f^*(-A^Ty)-g^*(y) \\
-
+```
+#### (5) Dual Ascent Algorithm :-
+The dual ascent algorithm is defined as :-
+```math
+\begin{align*}
+&\mathcal{f}: \mathbb{R}^n \to \mathbb{R} , \enspace b,x \in \mathbb{R}^n \enspace and \enspace \mathcal{f} \enspace \text{is convex} \\
+&minimize \enspace \mathcal{f}(x) \\
+&\text{subject to} \enspace Ax=b \\
+&\mathcal{L}(x,y)=\mathcal{f}(x)+y^T(Ax-b) \\
+&\text{Dual of the problem is} \\
+&\text{maximize} \enspace \mathcal{g}(y)=-\mathcal{f}^*(-A^Ty)-b^Ty\\
+&\text{where} \enspace \mathcal{f}^*(y)=\sup_{x \in \mathbb{R}^n} \{x^Ty-f(x)\} \\
+&x^*=\arg\min_{x} \mathcal{L}(x,y^*) \enspace where \enspace y^* \enspace \text{is optimal solution of } \mathcal{g}(y). \\
+\end{align*}
+```
+we optimize it by the following steps :-
+```math
+\begin{align*}
+& x^{k+1}=\arg\min_{x} \mathcal{L}(x,y^k) \\
+& y^{k+1}=y^k+\rho(Ax^{k+1}-b) \
+\end{align*}
+```
+#### (6) Augmented Lagrangian Method of Multipliers :-
+The augmented lagrangian method of multipliers is defined as :-
+```math
+\begin{align*}
+&\text{minimize} \enspace f(x) +\frac{\rho}{2}\text{\textbardbl}Ax-b\text{\textbardbl}_2^2 \\
+&\text{subject to} \enspace Ax=b \\
+&\text{then } \mathcal{L}_\rho(x,y)=f(x)+y^T(Ax-b)+\frac{\rho}{2}\text{\textbardbl}Ax-b\text{\textbardbl}_2^2 \\
+&\text{now } x^{k+1}=\arg\min_{x} \mathcal{L}_\rho(x,y^k) \\
+&\text{and } y^{k+1}=y^k+\rho(Ax^{k+1}-b) \\ 
+\end{align*}
+```
+#### (7) ADMM Algorithm :-
+The ADMM algorithm is defined as :-
+```math
+\begin{align*}
+&\mathcal{f,g}: \mathbb{R}^n \to \mathbb{R} , \enspace x,z,c \in \mathbb{R}^n \enspace and \enspace \mathcal{f,g} \enspace \text{are convex and } \mathcal{A,B}\in \mathbb{R}^{p\times n}, c\in \mathbb{R}^p\\
+&\text{minimize} \enspace \mathcal{f}(x)+\mathcal{g}(z) \\
+&\text{subject to} \enspace \mathcal{A}x+\mathcal{B}z=c \\
+&\text{then the Augmented Langrangian of the problem is  } \\ &\mathcal{L}_\rho(x,z,y)=\mathcal{f}(x)+\mathcal{g}(z)+y^T(\mathcal{A}x+\mathcal{B}z-c)+\frac{\rho}{2}\text{\textbardbl}\mathcal{A}x+\mathcal{B}z-c\text{\textbardbl}_2^2 \\
+&\text{now } x^{k+1}=\arg\min_{x} \mathcal{L}_\rho(x,z^k,y^k) \\
+&\text{and } z^{k+1}=\arg\min_{z} \mathcal{L}_\rho(x^{k+1},z,y^k)  \\
+&\text{and } y^{k+1}=y^k+\rho(\mathcal{A}x^{k+1}+\mathcal{B}z^{k+1}-c) \\
+\end{align*}
+```
+scaled form of the ADMM algorithm is defined as :-
+```math
+\begin{align*}
+&\text {let }r = \mathcal{A}x+\mathcal{B}z-c \enspace \text{then} \\
+&y^Tx+\frac{\rho}{2}\text{\textbardbl}r\text{\textbardbl}_2^2 = \frac{\rho}{2} \text{\textbardbl}r+\frac{1}{\rho}y \text{\textbardbl}_2^2 - \frac{1}{2\rho}\text{\textbardbl}y\text{\textbardbl}_2^2\\
+& \text{let } u=\frac{1}{\rho}y \enspace \text{then} \\
+&y^Tx+\frac{\rho}{2}\text{\textbardbl}r\text{\textbardbl}_2^2 = \frac{\rho}{2} \text{\textbardbl}r+u \text{\textbardbl}_2^2 - \frac{\rho}{2}\text{\textbardbl}u\text{\textbardbl}_2^2\\
+&\text{now } x^{k+1}=\arg\min_{x} (\mathcal{f}(x)+\frac{\rho}{2}\text{\textbardbl}\mathcal{A}x+\mathcal{B}z^k-c+u^k\text{\textbardbl}_2^2) \\
+& z^{k+1}=\arg\min_{z} (\mathcal{g}(z)+\frac{\rho}{2}\text{\textbardbl}\mathcal{A}x^{k+1}+\mathcal{B}z-c+u^k\text{\textbardbl}_2^2)  \\
+&u^{k+1}=u^k+\mathcal{A}x^{k+1}+\mathcal{B}z^{k+1}-c \\
+&\text{and } r^{k+1}=\mathcal{A}x^{k+1}+\mathcal{B}z^{k+1}-c \\
+&u^k=u^0+\sum_{j=0}^{k}r^j \\
+\end{align*}
 ```
 #### conversion from HSV to RGB :-
 ```math 
