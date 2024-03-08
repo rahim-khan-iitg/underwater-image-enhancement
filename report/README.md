@@ -94,7 +94,7 @@ Since we want to maximize the probability of $p(L,I|R)$ so we will minimize the 
 ```
 ```math
 \begin{align*}
-& \mathcal{L}(L,I,R)=\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}
+& \mathcal{L}(L,I,R)=\sum\limits_{i=0}^n\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}
 \end{align*}
 ```
 ```math
