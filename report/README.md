@@ -88,9 +88,9 @@ Since we want to maximize the probability of $p(L,I|R)$ so we will minimize the 
 -\sum_{\substack{0<i<m\\0<j<n}}\log \frac{1}{2s_2}exp{\biggl(-\frac{|\triangle R_{ij}|}{s_2}\biggr)}\\
 & \mathcal{L}(L,I,R)=\sum_{\substack{0<i<m\\0<j<n}}\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}
 +\sum_{\substack{0<i<m\\0<j<n}}\frac{(\nabla I_{ij})^2}{2\sigma_1^2}+\sum_{\substack{0<i<m\\0<j<n}}\frac{(\triangle I_{ij})^2}{2\sigma_2^2} +\sum_{\substack{0<i<m\\0<j<n}}\frac{|\nabla R_{ij}|}{s_1}+\sum_{\substack{0<i<m\\0<j<n}}\frac{|\triangle R_{ij}|}{s_2} + C\\
-&\mathcal{L}(L,I,R)=\text{\textbardbl} I \circ R-L \text{\textbardbl}_2^2 + \frac{\sigma^2}{2\sigma^2}\text{\textbardbl} \nabla I \text{\textbardbl}_2^2 + \frac{\sigma^2}{2\sigma_1^2}\text{\textbardbl} \triangle I \text{\textbardbl}_2^2 + \frac{\sigma^2}{s_1}\text{\textbardbl} \nabla R \text{\textbardbl}_1 + \frac{\sigma^2}{s_2}\text{\textbardbl} \triangle R \text{\textbardbl}_1 + C \\
-&\mathcal{E}(I,R)=\text{\textbardbl} I \circ R-L \text{\textbardbl}_2^2 + \frac{\sigma^2}{2\sigma^2}\text{\textbardbl} \nabla I \text{\textbardbl}_2^2 + \frac{\sigma^2}{2\sigma_1^2}\text{\textbardbl} \triangle I \text{\textbardbl}_2^2 + \frac{\sigma^2}{s_1}\text{\textbardbl} \nabla R \text{\textbardbl}_1 + \frac{\sigma^2}{s_2}\text{\textbardbl} \triangle R \text{\textbardbl}_1 \\
-&\mathcal{E}(I,R)=\text{\textbardbl} I \circ R-L \text{\textbardbl}_2^2 + \nu_1\text{\textbardbl} \nabla I \text{\textbardbl}_2^2 + \nu_2\text{\textbardbl} \triangle I \text{\textbardbl}_2^2 + \nu_3\text{\textbardbl} \nabla R \text{\textbardbl}_1 + \nu_4\text{\textbardbl} \triangle R \text{\textbardbl}_1 \\
+&\mathcal{L}(L,I,R)=\text{||} I \circ R-L \text{||}_2^2 + \frac{\sigma^2}{2\sigma^2}\text{||} \nabla I \text{||}_2^2 + \frac{\sigma^2}{2\sigma_1^2}\text{||} \triangle I \text{||}_2^2 + \frac{\sigma^2}{s_1}\text{||} \nabla R \text{||}_1 + \frac{\sigma^2}{s_2}\text{||} \triangle R \text{||}_1 + C \\
+&\mathcal{E}(I,R)=\text{||} I \circ R-L \text{||}_2^2 + \frac{\sigma^2}{2\sigma^2}\text{||} \nabla I \text{||}_2^2 + \frac{\sigma^2}{2\sigma_1^2}\text{||} \triangle I \text{||}_2^2 + \frac{\sigma^2}{s_1}\text{||} \nabla R \text{||}_1 + \frac{\sigma^2}{s_2}\text{||} \triangle R \text{||}_1 \\
+&\mathcal{E}(I,R)=\text{||} I \circ R-L \text{||}_2^2 + \nu_1\text{||} \nabla I \text{||}_2^2 + \nu_2\text{||} \triangle I \text{||}_2^2 + \nu_3\text{||} \nabla R \text{||}_1 + \nu_4\text{||} \triangle R \text{||}_1 \\
 \end{align*}
 ```
 where $\nu_1=\frac{\sigma^2}{2\sigma^2}$, $\nu_2=\frac{\sigma^2}{2\sigma_1^2}$, $\nu_3=\frac{\sigma^2}{s_1}$, $\nu_4=\frac{\sigma^2}{s_2}$ and $C$ is a constant.
@@ -146,9 +146,9 @@ we optimize it by the following steps :-
 The augmented lagrangian method of multipliers is defined as :-
 ```math
 \begin{align*}
-&\text{minimize} \enspace f(x) +\frac{\rho}{2}\text{\textbardbl}Ax-b\text{\textbardbl}_2^2 \\
+&\text{minimize} \enspace f(x) +\frac{\rho}{2}\text{||}Ax-b\text{||}_2^2 \\
 &\text{subject to} \enspace Ax=b \\
-&\text{then } \mathcal{L}_\rho(x,y)=f(x)+y^T(Ax-b)+\frac{\rho}{2}\text{\textbardbl}Ax-b\text{\textbardbl}_2^2 \\
+&\text{then } \mathcal{L}_\rho(x,y)=f(x)+y^T(Ax-b)+\frac{\rho}{2}\text{||}Ax-b\text{||}_2^2 \\
 &\text{now } x^{k+1}=\arg\min_{x} \mathcal{L}_\rho(x,y^k) \\
 &\text{and } y^{k+1}=y^k+\rho(Ax^{k+1}-b) \\ 
 \end{align*}
@@ -160,7 +160,7 @@ The ADMM algorithm is defined as :-
 &\mathcal{f,g}: \mathbb{R}^n \to \mathbb{R} , \enspace x,z,c \in \mathbb{R}^n \enspace and \enspace \mathcal{f,g} \enspace \text{are convex and } \mathcal{A,B}\in \mathbb{R}^{p\times n}, c\in \mathbb{R}^p\\
 &\text{minimize} \enspace \mathcal{f}(x)+\mathcal{g}(z) \\
 &\text{subject to} \enspace \mathcal{A}x+\mathcal{B}z=c \\
-&\text{then the Augmented Langrangian of the problem is  } \\ &\mathcal{L}_\rho(x,z,y)=\mathcal{f}(x)+\mathcal{g}(z)+y^T(\mathcal{A}x+\mathcal{B}z-c)+\frac{\rho}{2}\text{\textbardbl}\mathcal{A}x+\mathcal{B}z-c\text{\textbardbl}_2^2 \\
+&\text{then the Augmented Langrangian of the problem is  } \\ &\mathcal{L}_\rho(x,z,y)=\mathcal{f}(x)+\mathcal{g}(z)+y^T(\mathcal{A}x+\mathcal{B}z-c)+\frac{\rho}{2}\text{||}\mathcal{A}x+\mathcal{B}z-c\text{||}_2^2 \\
 &\text{now } x^{k+1}=\arg\min_{x} \mathcal{L}_\rho(x,z^k,y^k) \\
 &\text{and } z^{k+1}=\arg\min_{z} \mathcal{L}_\rho(x^{k+1},z,y^k)  \\
 &\text{and } y^{k+1}=y^k+\rho(\mathcal{A}x^{k+1}+\mathcal{B}z^{k+1}-c) \\
@@ -170,11 +170,11 @@ scaled form of the ADMM algorithm is defined as :-
 ```math
 \begin{align*}
 &\text {let }r = \mathcal{A}x+\mathcal{B}z-c \enspace \text{then} \\
-&y^Tx+\frac{\rho}{2}\text{\textbardbl}r\text{\textbardbl}_2^2 = \frac{\rho}{2} \text{\textbardbl}r+\frac{1}{\rho}y \text{\textbardbl}_2^2 - \frac{1}{2\rho}\text{\textbardbl}y\text{\textbardbl}_2^2\\
+&y^Tx+\frac{\rho}{2}\text{||}r\text{||}_2^2 = \frac{\rho}{2} \text{||}r+\frac{1}{\rho}y \text{||}_2^2 - \frac{1}{2\rho}\text{||}y\text{||}_2^2\\
 & \text{let } u=\frac{1}{\rho}y \enspace \text{then} \\
-&y^Tx+\frac{\rho}{2}\text{\textbardbl}r\text{\textbardbl}_2^2 = \frac{\rho}{2} \text{\textbardbl}r+u \text{\textbardbl}_2^2 - \frac{\rho}{2}\text{\textbardbl}u\text{\textbardbl}_2^2\\
-&\text{now } x^{k+1}=\arg\min_{x} (\mathcal{f}(x)+\frac{\rho}{2}\text{\textbardbl}\mathcal{A}x+\mathcal{B}z^k-c+u^k\text{\textbardbl}_2^2) \\
-& z^{k+1}=\arg\min_{z} (\mathcal{g}(z)+\frac{\rho}{2}\text{\textbardbl}\mathcal{A}x^{k+1}+\mathcal{B}z-c+u^k\text{\textbardbl}_2^2)  \\
+&y^Tx+\frac{\rho}{2}\text{||}r\text{||}_2^2 = \frac{\rho}{2} \text{||}r+u \text{||}_2^2 - \frac{\rho}{2}\text{||}u\text{||}_2^2\\
+&\text{now } x^{k+1}=\arg\min_{x} (\mathcal{f}(x)+\frac{\rho}{2}\text{||}\mathcal{A}x+\mathcal{B}z^k-c+u^k\text{||}_2^2) \\
+& z^{k+1}=\arg\min_{z} (\mathcal{g}(z)+\frac{\rho}{2}\text{||}\mathcal{A}x^{k+1}+\mathcal{B}z-c+u^k\text{||}_2^2)  \\
 &u^{k+1}=u^k+\mathcal{A}x^{k+1}+\mathcal{B}z^{k+1}-c \\
 &\text{and } r^{k+1}=\mathcal{A}x^{k+1}+\mathcal{B}z^{k+1}-c \\
 &u^k=u^0+\sum_{j=0}^{k}r^j \\
@@ -184,22 +184,22 @@ scaled form of the ADMM algorithm is defined as :-
 To optimize the objective function . We have to convert $l_1$ norm to $l_2$ norm. We introduce two auxiliary variables $d,h$ and two error terms $m,n$.
 ```math
 \begin{align*}
-&\mathcal{E}(I,R)=\text{\textbardbl} I \circ R-L \text{\textbardbl}_2^2 + \nu_3\text{\textbardbl} \nabla I \text{\textbardbl}_2^2 + \nu_4\text{\textbardbl} \triangle I \text{\textbardbl}_2^2 + \nu_1\text{\textbardbl} \nabla R \text{\textbardbl}_1 + \nu_1\text{\textbardbl} \triangle R \text{\textbardbl}_1 \\
-&\mathcal{E}(I,R)=\text{\textbardbl} I \circ R-L \text{\textbardbl}_2^2 + \nu_3 \text{\textbardbl} \nabla I \text{\textbardbl}_2^2 + \nu_4\text{\textbardbl} \triangle I \text{\textbardbl}_2^2 + \nu_1 \left(\text{\textbardbl}d\text{\textbardbl}_1 +\lambda_1\text{\textbardbl} \nabla R -d+m\text{\textbardbl}_2^2 \right) + \nu_1 \left(\text{\textbardbl}h\text{\textbardbl}_1+\lambda_2\text{\textbardbl} \triangle R -h+n\text{\textbardbl}_2^2\right) \\
+&\mathcal{E}(I,R)=\text{||} I \circ R-L \text{||}_2^2 + \nu_3\text{||} \nabla I \text{||}_2^2 + \nu_4\text{||} \triangle I \text{||}_2^2 + \nu_1\text{||} \nabla R \text{||}_1 + \nu_1\text{||} \triangle R \text{||}_1 \\
+&\mathcal{E}(I,R)=\text{||} I \circ R-L \text{||}_2^2 + \nu_3 \text{||} \nabla I \text{||}_2^2 + \nu_4\text{||} \triangle I \text{||}_2^2 + \nu_1 \left(\text{||}d\text{||}_1 +\lambda_1\text{||} \nabla R -d+m\text{||}_2^2 \right) + \nu_1 \left(\text{||}h\text{||}_1+\lambda_2\text{||} \triangle R -h+n\text{||}_2^2\right) \\
 \end{align*}
 ```
 Now we split this into three parts and optimize it using ADMM algorithm $\rightarrow$
 (1)
 ```math
 \begin{align*}
-&d^{k}=\arg\min_{d} \left(\text{\textbardbl}d\text{\textbardbl}_1 +\lambda_1\text{\textbardbl} \nabla R^{k-1} -d+m^{k-1}\text{\textbardbl}_2^2 \right) \\
-&h^{k}=\arg\min_{h} \left(\text{\textbardbl}h\text{\textbardbl}_1+\lambda_2\text{\textbardbl} \triangle R^{k-1} -h+n^{k-1}\text{\textbardbl}_2^2\right) \\
+&d^{k}=\arg\min_{d} \left(\text{||}d\text{||}_1 +\lambda_1\text{||} \nabla R^{k-1} -d+m^{k-1}\text{||}_2^2 \right) \\
+&h^{k}=\arg\min_{h} \left(\text{||}h\text{||}_1+\lambda_2\text{||} \triangle R^{k-1} -h+n^{k-1}\text{||}_2^2\right) \\
 \end{align*}
 ```
 (2)
 ```math
 \begin{align*}
-&R^{k}=\arg\min_{R} \left(\text{\textbardbl} R-\frac{L}{I^{k-1}} \text{\textbardbl}_2^2 + \nu_1\lambda_1\text{\textbardbl} \nabla R -d^{k}+m^{k-1}\text{\textbardbl}_2^2 + \nu_2 \lambda_2\text{\textbardbl} \triangle R -h^{k}+n^{k-1}\text{\textbardbl}_2^2\right) \\
+&R^{k}=\arg\min_{R} \left(\text{||} R-\frac{L}{I^{k-1}} \text{||}_2^2 + \nu_1\lambda_1\text{||} \nabla R -d^{k}+m^{k-1}\text{||}_2^2 + \nu_2 \lambda_2\text{||} \triangle R -h^{k}+n^{k-1}\text{||}_2^2\right) \\
 &m^k=m^{k-1}+\nabla R^k-d^k \\
 &n^k=n^{k-1}+\triangle R^k-h^k \\
 \end{align*}
@@ -207,7 +207,7 @@ Now we split this into three parts and optimize it using ADMM algorithm $\righta
 (3)
 ```math
 \begin{align*}
-&I^{k}=\arg\min_{I} \left(\text{\textbardbl} I-\frac{L}{R^k} \text{\textbardbl}_2^2 + \nu_3\text{\textbardbl} \nabla I\text{\textbardbl}_2^2 + \nu_4\text{\textbardbl} \triangle I\text{\textbardbl}_2^2\right) \\
+&I^{k}=\arg\min_{I} \left(\text{||} I-\frac{L}{R^k} \text{||}_2^2 + \nu_3\text{||} \nabla I\text{||}_2^2 + \nu_4\text{||} \triangle I\text{||}_2^2\right) \\
 \end{align*}
 ```
 #### $\textcolor{blue}{conversion}$ from HSV to RGB :-
