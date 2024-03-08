@@ -85,16 +85,20 @@ Since we want to maximize the probability of $p(L,I|R)$ so we will minimize the 
 ```math
 \begin{align*}
 &\mathcal{L}(L,I,R)=
--\sum_{\substack{0<i<m\\0<j<n}}\log \frac{1}{\sqrt{2\pi}\sigma}exp{\left(-\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}\right)}
--\sum_{\substack{0<i<m\\0<j<n}}\log \frac{1}{\sqrt{2\pi}\sigma_1}exp{\left(-\frac{(\nabla I_{ij})^2}{2\sigma_1^2}\right)} \\
-&-\sum_{\substack{0<i<m\\0<j<n}}\log \frac{1}{\sqrt{2\pi}\sigma_2}exp{\left(-\frac{(\triangle I_{ij})^2}{2\sigma_2^2}\right)}
--\sum_{\substack{0<i<m\\0<j<n}}\log \frac{1}{2s_1}exp{\left(-\frac{|\nabla R_{ij}|}{s_1}\right)}
--\sum_{\substack{0<i<m\\0<j<n}}\log \frac{1}{2s_2}exp{\left(-\frac{|\triangle R_{ij}|}{s_2}\right)}\\
+-\sum_{0<i<m}\sum_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma}exp{\left(-\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}\right)}
+-\sum_{0<i<m}\sum_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma_1}exp{\left(-\frac{(\nabla I_{ij})^2}{2\sigma_1^2}\right)} \\
+&-\sum_{0<i<m}\sum_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma_2}exp{\left(-\frac{(\triangle I_{ij})^2}{2\sigma_2^2}\right)}
+-\sum_{0<i<m}\sum_{0<j<m}\log \frac{1}{2s_1}exp{\left(-\frac{|\nabla R_{ij}|}{s_1}\right)}
+-\sum_{0<i<m}\sum_{0<j<m}\log \frac{1}{2s_2}exp{\left(-\frac{|\triangle R_{ij}|}{s_2}\right)}\\
 \end{align*}
 ```
 ```math
 \begin{align*}
-& \mathcal{L}(L,I,R)=\sum_{0<i<m}\sum_{0<j<m}\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}
+& \mathcal{L}(L,I,R)=\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}
+\end{align*}
+```
+```math
+\begin{align*}
 +\sum_{0<i<m}\sum_{0<j<m}\frac{(\nabla I_{ij})^2}{2\sigma_1^2}+\sum\frac{(\triangle I_{ij})^2}{2\sigma_2^2} +\sum_{0<i<m}\sum_{0<j<m}\frac{|\nabla R_{ij}|}{s_1}+\sum_{0<i<m}\sum_{0<j<m}\frac{|\triangle R_{ij}|}{s_2} + C\\
 \end{align*}
 ```
@@ -200,7 +204,7 @@ To optimize the objective function . We have to convert $l_1$ norm to $l_2$ norm
 &\mathcal{E}(I,R)=\text{||} I \circ R-L \text{||}_2^2 + \nu_3 \text{||} \nabla I \text{||}_2^2 + \nu_4\text{||} \triangle I \text{||}_2^2 + \nu_1 \left(\text{||}d\text{||}_1 +\lambda_1\text{||} \nabla R -d+m\text{||}_2^2 \right) + \nu_1 \left(\text{||}h\text{||}_1+\lambda_2\text{||} \triangle R -h+n\text{||}_2^2\right) \\
 \end{align*}
 ```
-Now we split this into three parts and optimize it using ADMM algorithm $\rightarrow$
+Now we split this into three parts and optimize it using ADMM algorithm $\rightarrow$\
 (1)
 ```math
 \begin{align*}
