@@ -87,11 +87,18 @@ Since we want to maximize the probability of $p(L,I|R)$ so we will minimize the 
 &\mathcal{L}(L,I,R)=
 -\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma}exp{\left(-\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}\right)}
 -\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma_1}exp{\left(-\frac{(\nabla I_{ij})^2}{2\sigma_1^2}\right)} \\
+\end{align*}
+```
+```math
+\begin{align*}
 &-\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma_2}exp{\left(-\frac{(\triangle I_{ij})^2}{2\sigma_2^2}\right)}
 -\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{2s_1}exp{\left(-\frac{|\nabla R_{ij}|}{s_1}\right)}
 -\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{2s_2}exp{\left(-\frac{|\triangle R_{ij}|}{s_2}\right)}\\
+\end{align*}
+```
+```math
+\begin{align*}
 & \mathcal{L}(L,I,R)=\sum\limits_{0<i<n}\sum\limits_{0<j<m}\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}
-
 +\sum\limits_{0<i<n}\sum\limits_{0<j<m}\frac{(\nabla I_{ij})^2}{2\sigma_1^2}+\sum\frac{(\triangle I_{ij})^2}{2\sigma_2^2} +\sum\limits_{0<i<n}\sum\limits_{0<j<m}\frac{|\nabla R_{ij}|}{s_1}+\sum\limits_{0<i<n}\sum\limits_{0<j<m}\frac{|\triangle R_{ij}|}{s_2} + C\\
 \end{align*}
 ```
