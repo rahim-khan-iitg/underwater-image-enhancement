@@ -86,15 +86,8 @@ Since we want to maximize the probability of $p(L,I|R)$ so we will minimize the 
 \begin{align*}
 &\mathcal{L}(L,I,R)=
 -\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma}exp{\left(-\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}\right)}
-\end{align*}
-```
-```math
-\begin{align*}
+
 -\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma_1}exp{\left(-\frac{(\nabla I_{ij})^2}{2\sigma_1^2}\right)} \\
-\end{align*}
-```
-```math
-\begin{align*}
 &-\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma_2}exp{\left(-\frac{(\triangle I_{ij})^2}{2\sigma_2^2}\right)}
 -\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{2s_1}exp{\left(-\frac{|\nabla R_{ij}|}{s_1}\right)}
 -\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{2s_2}exp{\left(-\frac{|\triangle R_{ij}|}{s_2}\right)}\\
@@ -209,14 +202,14 @@ To optimize the objective function . We have to convert $l_1$ norm to $l_2$ norm
 \end{align*}
 ```
 Now we split this into three parts and optimize it using ADMM algorithm $\rightarrow$\
-(1)
+P-1
 ```math
 \begin{align*}
 &d^{k}=\arg\min_{d} \left(\text{||}d\text{||}_1 +\lambda_1\text{||} \nabla R^{k-1} -d+m^{k-1}\text{||}_2^2 \right) \\
 &h^{k}=\arg\min_{h} \left(\text{||}h\text{||}_1+\lambda_2\text{||} \triangle R^{k-1} -h+n^{k-1}\text{||}_2^2\right) \\
 \end{align*}
 ```
-(2)
+P-2
 ```math
 \begin{align*}
 &R^{k}=\arg\min_{R} \left(\text{||} R-\frac{L}{I^{k-1}} \text{||}_2^2 + \nu_1\lambda_1\text{||} \nabla R -d^{k}+m^{k-1}\text{||}_2^2 + \nu_2 \lambda_2\text{||} \triangle R -h^{k}+n^{k-1}\text{||}_2^2\right) \\
@@ -224,13 +217,42 @@ Now we split this into three parts and optimize it using ADMM algorithm $\righta
 &n^k=n^{k-1}+\triangle R^k-h^k \\
 \end{align*}
 ```
-(3)
+P-3
 ```math
 \begin{align*}
 &I^{k}=\arg\min_{I} \left(\text{||} I-\frac{L}{R^k} \text{||}_2^2 + \nu_3\text{||} \nabla I\text{||}_2^2 + \nu_4\text{||} \triangle I\text{||}_2^2\right) \\
 \end{align*}
 ```
-#### $\textcolor{blue}{conversion}$ from HSV to RGB :-
+### Step 7 : Update for P-1 :-
+```math
+\begin{align*}
+&d^{k}_h=\text{shrink}(\nabla_h R^{k-1}+m^{k-1}_h,\frac{1}{2\lambda_1}) \\
+&d^{k}_v=\text{shrink}(\nabla_v R^{k-1}+m^{k-1}_v,\frac{1}{2\lambda_1}) \\
+&h^{k}_h=\text{shrink}(\triangle_h R^{k-1}+n^{k-1}_h,\frac{1}{2\lambda_2}) \\
+&\text{where } \text{shrink}(x,\gamma)=\max(0,|x|-\gamma) \times \frac{x}{|x|} \text{ and } \frac{x}{|x|}=0 \text{ if } x=0\\
+\end{align*}
+```
+### Step 8 : Update for P-2 :-
+```math
+\begin{align*}
+&R^k=\mathcal{F}^{-1}\left(\frac{\mathcal{F}(L/I^{k-1})+\nu_1\lambda_1\varPhi_1+\nu_2\lambda_2\varPhi_2}{1+\nu_1\varPsi_1+\nu_2\varPsi_2}\right) \\
+&\text{where } \varPhi_1=\mathcal{F}^{*}(\nabla_h).\mathcal{F}(d^{k}_h+m^{k-1}_h)+\mathcal{F}^{*}(\nabla_v).\mathcal{F}(d^{k}_v+m^{k-1}_v) \text{ and }\\
+&\varPhi_2=\mathcal{F}^{*}(\triangle).\mathcal{F}( h^{k}+n^{k-1}) \\
+&\varPsi_1=\mathcal{F}^{*}(\nabla_h).\mathcal{F}(\nabla_h)+\mathcal{F}^{*}(\nabla_v).\mathcal{F}(\nabla_v) \text{ and }\\
+&\varPsi_2=\mathcal{F}^{*}(\triangle).\mathcal{F}(\triangle)  \enspace \mathcal{F} \text{ is FFT Operator} \\
+&m^k_h=m^{k-1}_h+\nabla R^k_h-d^k_h \\
+&m^k_v=m^{k-1}_v+\nabla R^k_v-d^k_v \\
+&n^k_h=n^{k-1}_h+\triangle R^k_h-h^k_h \\
+\end{align*}
+```
+### Step 9 : Update for P-3 :-
+```math
+\begin{align*}
+&I^k=\mathcal{F}^{-1}\left(\frac{\mathcal{F}(L/R^k)}{\mathcal{F}(1)+\nu_3\varPsi_3+\nu_4\varPsi_4}\right) \\
+\end{align*}
+```
+
+#### $\text{\textcolor{blue}{conversion}}$ from HSV to RGB :-
 ```math 
 \begin{align*}
     &C=V \times S \\
