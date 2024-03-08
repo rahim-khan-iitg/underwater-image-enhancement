@@ -180,7 +180,37 @@ scaled form of the ADMM algorithm is defined as :-
 &u^k=u^0+\sum_{j=0}^{k}r^j \\
 \end{align*}
 ```
-#### conversion from HSV to RGB :-
+### Step 6 : Numerical Optimization :-
+To optimize the objective function . We have to convert $l_1$ norm to $l_2$ norm. We introduce two auxiliary variables $d,h$ and two error terms $m,n$.
+```math
+\begin{align*}
+&\mathcal{E}(I,R)=\text{\textbardbl} I \circ R-L \text{\textbardbl}_2^2 + \nu_3\text{\textbardbl} \nabla I \text{\textbardbl}_2^2 + \nu_4\text{\textbardbl} \triangle I \text{\textbardbl}_2^2 + \nu_1\text{\textbardbl} \nabla R \text{\textbardbl}_1 + \nu_1\text{\textbardbl} \triangle R \text{\textbardbl}_1 \\
+&\mathcal{E}(I,R)=\text{\textbardbl} I \circ R-L \text{\textbardbl}_2^2 + \nu_3 \text{\textbardbl} \nabla I \text{\textbardbl}_2^2 + \nu_4\text{\textbardbl} \triangle I \text{\textbardbl}_2^2 + \nu_1 \left(\text{\textbardbl}d\text{\textbardbl}_1 +\lambda_1\text{\textbardbl} \nabla R -d+m\text{\textbardbl}_2^2 \right) + \nu_1 \left(\text{\textbardbl}h\text{\textbardbl}_1+\lambda_2\text{\textbardbl} \triangle R -h+n\text{\textbardbl}_2^2\right) \\
+\end{align*}
+```
+Now we split this into three parts and optimize it using ADMM algorithm $\rightarrow$
+(1)
+```math
+\begin{align*}
+&d^{k}=\arg\min_{d} \left(\text{\textbardbl}d\text{\textbardbl}_1 +\lambda_1\text{\textbardbl} \nabla R^{k-1} -d+m^{k-1}\text{\textbardbl}_2^2 \right) \\
+&h^{k}=\arg\min_{h} \left(\text{\textbardbl}h\text{\textbardbl}_1+\lambda_2\text{\textbardbl} \triangle R^{k-1} -h+n^{k-1}\text{\textbardbl}_2^2\right) \\
+\end{align*}
+```
+(2)
+```math
+\begin{align*}
+&R^{k}=\arg\min_{R} \left(\text{\textbardbl} R-\frac{L}{I^{k-1}} \text{\textbardbl}_2^2 + \nu_1\lambda_1\text{\textbardbl} \nabla R -d^{k}+m^{k-1}\text{\textbardbl}_2^2 + \nu_2 \lambda_2\text{\textbardbl} \triangle R -h^{k}+n^{k-1}\text{\textbardbl}_2^2\right) \\
+&m^k=m^{k-1}+\nabla R^k-d^k \\
+&n^k=n^{k-1}+\triangle R^k-h^k \\
+\end{align*}
+```
+(3)
+```math
+\begin{align*}
+&I^{k}=\arg\min_{I} \left(\text{\textbardbl} I-\frac{L}{R^k} \text{\textbardbl}_2^2 + \nu_3\text{\textbardbl} \nabla I\text{\textbardbl}_2^2 + \nu_4\text{\textbardbl} \triangle I\text{\textbardbl}_2^2\right) \\
+\end{align*}
+```
+#### $\textcolor{blue}{conversion}$ from HSV to RGB :-
 ```math 
 \begin{align*}
     &C=V \times S \\
