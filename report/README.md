@@ -80,12 +80,20 @@ Since we want to maximize the probability of $p(L,I|R)$ so we will minimize the 
 &\mathcal{L}(L,I,R)=-\log p(L|R,I)-\log p(I)-\log p(R) \\
 &\mathcal{L}(L,I,R)=-\log p(L|R,I)-\log p(I)-\log p_1(R)-\log p_2(R) \\
 &\mathcal{L}(L,I,R)=-\log p(L|R,I)-\log p_3(I)-\log p_4(I)-\log p_1(R)-\log p_2(R) \\
+\end{align*}
+```
+```math
+\begin{align*}
 &\mathcal{L}(L,I,R)=
 -\sum_{\substack{0<i<m\\0<j<n}}\log \frac{1}{\sqrt{2\pi}\sigma}exp{\biggl(-\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}\biggr)}
 -\sum_{\substack{0<i<m\\0<j<n}}\log \frac{1}{\sqrt{2\pi}\sigma_1}exp{\biggl(-\frac{(\nabla I_{ij})^2}{2\sigma_1^2}\biggr)} \\
 &-\sum_{\substack{0<i<m\\0<j<n}}\log \frac{1}{\sqrt{2\pi}\sigma_2}exp{\biggl(-\frac{(\triangle I_{ij})^2}{2\sigma_2^2}\biggr)}
 -\sum_{\substack{0<i<m\\0<j<n}}\log \frac{1}{2s_1}exp{\biggl(-\frac{|\nabla R_{ij}|}{s_1}\biggr)}
 -\sum_{\substack{0<i<m\\0<j<n}}\log \frac{1}{2s_2}exp{\biggl(-\frac{|\triangle R_{ij}|}{s_2}\biggr)}\\
+\end{align*}
+```
+```math
+\begin{align*}
 & \mathcal{L}(L,I,R)=\sum_{\substack{0<i<m\\0<j<n}}\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}
 +\sum_{\substack{0<i<m\\0<j<n}}\frac{(\nabla I_{ij})^2}{2\sigma_1^2}+\sum_{\substack{0<i<m\\0<j<n}}\frac{(\triangle I_{ij})^2}{2\sigma_2^2} +\sum_{\substack{0<i<m\\0<j<n}}\frac{|\nabla R_{ij}|}{s_1}+\sum_{\substack{0<i<m\\0<j<n}}\frac{|\triangle R_{ij}|}{s_2} + C\\
 &\mathcal{L}(L,I,R)=\text{||} I \circ R-L \text{||}_2^2 + \frac{\sigma^2}{2\sigma^2}\text{||} \nabla I \text{||}_2^2 + \frac{\sigma^2}{2\sigma_1^2}\text{||} \triangle I \text{||}_2^2 + \frac{\sigma^2}{s_1}\text{||} \nabla R \text{||}_1 + \frac{\sigma^2}{s_2}\text{||} \triangle R \text{||}_1 + C \\
