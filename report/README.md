@@ -127,12 +127,14 @@ $f^*(y)$ is always a convex function even if $f$ is not convex.
 #### (4) Dual Function :-
 The dual function of a convex optimization problem is defined as :-
 ```math
-\text{minimize} \enspace f(x) +g(y) \\
-\text{subject to} \enspace Ax=y\\
-\text{where} \enspace x \in \mathbb{R}^n, y \in \mathbb{R}^m
-\mathcal{L}(x,y,\lambda)=f(x)+g(y)+\lambda^T(Ax-y)\\
-\text{Dual of the problem is} \\
-\text{maximize} \enspace \mathcal{g}(y)=-f^*(-A^Ty)-g^*(y) \\
+\begin{align*}
+&\text{minimize} \enspace f(x) +g(y) \\
+&\text{subject to} \enspace Ax=y\\
+&\text{where} \enspace x \in \mathbb{R}^n, y \in \mathbb{R}^m \\
+&\mathcal{L}(x,y,\lambda)=f(x)+g(y)+\lambda^T(Ax-y)\\
+&\text{Dual of the problem is} \\
+&\text{maximize} \enspace \mathcal{g}(y)=-f^*(-A^Ty)-g^*(y) \\
+\end{align*}
 ```
 #### (5) Dual Ascent Algorithm :-
 The dual ascent algorithm is defined as :-
@@ -228,7 +230,7 @@ P-3
 \begin{align*}
 &d^{k}_h=\text{shrink}(\nabla_h R^{k-1}+m^{k-1}_h,\frac{1}{2\lambda_1}) \\
 &d^{k}_v=\text{shrink}(\nabla_v R^{k-1}+m^{k-1}_v,\frac{1}{2\lambda_1}) \\
-&h^{k}_h=\text{shrink}(\triangle_h R^{k-1}+n^{k-1}_h,\frac{1}{2\lambda_2}) \\
+&h^{k}=\text{shrink}(\triangle R^{k-1}+n^{k-1},\frac{1}{2\lambda_2}) \\
 &\text{where } \text{shrink}(x,\gamma)=\max(0,|x|-\gamma) \times \frac{x}{|x|} \text{ and } \frac{x}{|x|}=0 \text{ if } x=0\\
 \end{align*}
 ```
@@ -242,7 +244,7 @@ P-3
 &\varPsi_2=\mathcal{F}^{*}(\triangle).\mathcal{F}(\triangle)  \enspace \mathcal{F} \text{ is FFT Operator} \\
 &m^k_h=m^{k-1}_h+\nabla R^k_h-d^k_h \\
 &m^k_v=m^{k-1}_v+\nabla R^k_v-d^k_v \\
-&n^k_h=n^{k-1}_h+\triangle R^k_h-h^k_h \\
+&n^k=n^{k-1}+\triangle R^k-h^k \\
 \end{align*}
 ```
 ### Step 9 : Update for P-3 :-
@@ -252,14 +254,34 @@ P-3
 \end{align*}
 ```
 ### Algorithm :-
-Input:- input value channel L, weighting parameters $\nu_1,\nu_2,\nu_3,\nu_4$ and the number of iterations K 
-
-
-#### $\text{\textcolor{blue}{conversion}}$ from HSV to RGB :-
+```math
+\begin{align*}
+&\bf{Input:-} \text{input value channel L, weighting parameters } \nu_1,\nu_2,\nu_3,\nu_4 \enspace and \enspace \lambda_1,\lambda_2 \text{ and the number of iterations T} \\
+&\bf{Initialization:-} \text{ initialize } I^0=\text{Gausian filter of L }  R^0=0 \text{ and } d^0_h=d^0_v=h^0_h=h^0_v=m^0_h=m^0_v=n^0_h=n^0_v=0 \text{ and k=1} \\
+&\bf{Iteration \enspace on \enspace k:-} \text{ repeat until k=T }: \\
+&\text{update } d^{k}_h,d^{k}_v,h^{k}_h,h^{k}_v \text{ using update for P-1}; \\
+&\text{update } R^k \text{ using update for P-2} \\
+&\text{update }m^k_h,m^k_v,n^k \text{ using update for P-2}; \\
+&\text{update } I^k \text{ using update for P-3} \\
+&\bf{Stopping \enspace  Criteria:-} \text{ terminate iteration } \text{ if k=T otherwise continue iteration k=k+1;} \\
+&\bf{Output:-} \text{ output the reflectance R and illumination I  } \\
+\end{align*}
+```
+### Gamma Correction :-
+```math
+I_e=W \times \left( \frac{I}{W}\right)^\frac{1}{\gamma} \\
+\text{use W = 250 and } \gamma = 2.5\\
+```
+### Image Reconstruction :-
+```math
+L_e=I_e \circ R_e \\
+```
+now convert the image from HSV to RGB by using the formula given below .
+#### Conversion from HSV to RGB :-
 ```math 
 \begin{align*}
     &C=V \times S \\
-    &X=C \times (1-|(\frac{H}{60} \mod 2)-1|) \\
+    &X=C \times \left(1-|\left(\frac{H}{60} \mod 2\right)-1|\right) \\
     &m=V-C \\
     &\begin{cases}
     (R',G',B')=(C,X,0) & \text{if } 0 \leq H < 60 \\
