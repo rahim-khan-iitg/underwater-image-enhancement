@@ -85,18 +85,18 @@ Since we want to maximize the probability of $p(L,I|R)$ so we will minimize the 
 ```math
 \begin{align*}
 &\mathcal{L}(L,I,R)=
--\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma}exp{\left(-\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}\right)}
+-\sum\sum\log \frac{1}{\sqrt{2\pi}\sigma}exp{\left(-\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}\right)}
 
--\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma_1}exp{\left(-\frac{(\nabla I_{ij})^2}{2\sigma_1^2}\right)} \\
-&-\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{\sqrt{2\pi}\sigma_2}exp{\left(-\frac{(\triangle I_{ij})^2}{2\sigma_2^2}\right)}
--\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{2s_1}exp{\left(-\frac{|\nabla R_{ij}|}{s_1}\right)}
--\sum\limits_{0<i<n}\sum\limits_{0<j<m}\log \frac{1}{2s_2}exp{\left(-\frac{|\triangle R_{ij}|}{s_2}\right)}\\
+-\sum\sum\log \frac{1}{\sqrt{2\pi}\sigma_1}exp{\left(-\frac{(\nabla I_{ij})^2}{2\sigma_1^2}\right)} \\
+&-\sum\sum\log \frac{1}{\sqrt{2\pi}\sigma_2}exp{\left(-\frac{(\triangle I_{ij})^2}{2\sigma_2^2}\right)}
+-\sum\sum\log \frac{1}{2s_1}exp{\left(-\frac{|\nabla R_{ij}|}{s_1}\right)}
+-\sum\sum\log \frac{1}{2s_2}exp{\left(-\frac{|\triangle R_{ij}|}{s_2}\right)}\\
 \end{align*}
 ```
 ```math
 \begin{align*}
-& \mathcal{L}(L,I,R)=\sum\limits_{0<i<n}\sum\limits_{0<j<m}\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}
-+\sum\limits_{0<i<n}\sum\limits_{0<j<m}\frac{(\nabla I_{ij})^2}{2\sigma_1^2}+\sum\frac{(\triangle I_{ij})^2}{2\sigma_2^2} +\sum\limits_{0<i<n}\sum\limits_{0<j<m}\frac{|\nabla R_{ij}|}{s_1}+\sum\limits_{0<i<n}\sum\limits_{0<j<m}\frac{|\triangle R_{ij}|}{s_2} + C\\
+& \mathcal{L}(L,I,R)=\sum\sum\frac{(I_{ij} \circ R_{ij}-L_{ij})^2}{2\sigma^2}
++\sum\sum\frac{(\nabla I_{ij})^2}{2\sigma_1^2}+\sum\frac{(\triangle I_{ij})^2}{2\sigma_2^2} +\sum\sum\frac{|\nabla R_{ij}|}{s_1}+\sum\sum\frac{|\triangle R_{ij}|}{s_2} + C\\
 \end{align*}
 ```
 ```math
@@ -248,9 +248,12 @@ P-3
 ### Step 9 : Update for P-3 :-
 ```math
 \begin{align*}
-&I^k=\mathcal{F}^{-1}\left(\frac{\mathcal{F}(L/R^k)}{\mathcal{F}(1)+\nu_3\varPsi_3+\nu_4\varPsi_4}\right) \\
+&I^k=\mathcal{F}^{-1}\left(\frac{\mathcal{F}(\frac{L}{R^k})}{\mathcal{F}(1)+\nu_3\varPsi_3+\nu_4\varPsi_4}\right) \\
 \end{align*}
 ```
+### Algorithm :-
+Input:- input value channel L, weighting parameters $\nu_1,\nu_2,\nu_3,\nu_4$ and the number of iterations K 
+
 
 #### $\text{\textcolor{blue}{conversion}}$ from HSV to RGB :-
 ```math 
