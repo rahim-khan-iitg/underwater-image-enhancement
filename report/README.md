@@ -8,7 +8,7 @@ where
 $S^c$ = Color channel having values in [0,1].
 $M^c$ = Mean of the channel .
 $V^c$ = Varience of the channel.
-### Step 2 : HSV to RGB conversion :-
+### Step 2 : RGB to HSV conversion :-
 Digital color images has 3 color channels R,G,B . Every value of RGB channels lies between 0 to 255 including both 0 and 255.
 RGB stands for RED,GREEN,BLUE and HSV stands for HUE, SATURATION, VALUE
 #### conversion from RGB to HSV :-
@@ -33,7 +33,7 @@ RGB stands for RED,GREEN,BLUE and HSV stands for HUE, SATURATION, VALUE
 ```
 ### Step 3 : Model Description :-
 Now select the V channel and let L=V 
-$L=\frac{L}{255}$ . 
+$L=L\times 255$ . 
 By Retinex theory, $L=I\circ R $ where $R$ is Reflectance and $I$ is Illumination. $\circ$ is the element wise multiplication.
 ```math
 I_{ij} \in [0,255] \\
@@ -61,7 +61,7 @@ Now consider the following assumptions :-
 where $\mathcal{N}$ is the Gaussian distribution and $\mathcal{L}$ is the Laplacian distribution.
 ```math
 \begin{align*}
-&\nabla_h=[-1,1] , \nabla_v=[-1;1]  \\
+&\nabla_h=[-1,1] , \nabla_v=\begin{bmatrix} -1 \\ 1 \end{bmatrix} \\
 &\triangle=\begin{bmatrix}
 0 & -1 & 0 \\
 -1 & 4 & -1 \\
@@ -200,6 +200,10 @@ To optimize the objective function . We have to convert $l_1$ norm to $l_2$ norm
 ```math
 \begin{align*}
 &\mathcal{E}(I,R)=\text{||} I \circ R-L \text{||}_2^2 + \nu_3\text{||} \nabla I \text{||}_2^2 + \nu_4\text{||} \triangle I \text{||}_2^2 + \nu_1\text{||} \nabla R \text{||}_1 + \nu_1\text{||} \triangle R \text{||}_1 \\
+\end{align*}
+```
+```math
+\begin{align*}
 &\mathcal{E}(I,R)=\text{||} I \circ R-L \text{||}_2^2 + \nu_3 \text{||} \nabla I \text{||}_2^2 + \nu_4\text{||} \triangle I \text{||}_2^2 + \nu_1 \left(\text{||}d\text{||}_1 +\lambda_1\text{||} \nabla R -d+m\text{||}_2^2 \right) + \nu_1 \left(\text{||}h\text{||}_1+\lambda_2\text{||} \triangle R -h+n\text{||}_2^2\right) \\
 \end{align*}
 ```
