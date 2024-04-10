@@ -12,10 +12,11 @@ def max_rgb(image):
 
     return enhanced_image
 
-image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test2.png"
+image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test14.png"
 image = cv2.imread(image_path)
 enhanced_image = max_rgb(image)
 cv2.imshow("Original Image", image)
 cv2.imshow("Enhanced Image", enhanced_image)
+cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/max_rgb_test14.png", enhanced_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

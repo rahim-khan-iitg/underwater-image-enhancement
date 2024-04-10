@@ -14,11 +14,12 @@ def white_balance(image):
 
     return balanced_image
 
-image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test22.png"
+image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test14.png"
 image = cv2.imread(image_path)
 enhanced_image = white_balance(image)
 cv2.imshow("Original Image", image)
 cv2.imshow("Enhanced Image", enhanced_image)
+cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/white_balance_test14.png", enhanced_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 

@@ -24,7 +24,7 @@ def gray_world(image):
     return image
 
 # Load the image
-image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test22.png"
+image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test14.png"
 image = cv2.imread(image_path)
 
 # Apply the Gray-World algorithm
@@ -33,5 +33,6 @@ enhanced_image = gray_world(image)
 # Display the original and enhanced images
 cv2.imshow('Original Image', image)
 cv2.imshow('Enhanced Image', enhanced_image)
+cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/gray_world_test14.png", enhanced_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

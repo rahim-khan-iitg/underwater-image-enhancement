@@ -11,10 +11,11 @@ def clahe(image, clip_limit=2.0, grid_size=(8, 8)):
 
     return enhanced_image
 
-image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test22.png"
+image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test14.png"
 img=cv2.imread(image_path)
 enhanced_image = clahe(img)
 cv2.imshow("Original Image", img)
 cv2.imshow("Enhanced Image", enhanced_image)
+cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/clahe_test14.png", enhanced_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

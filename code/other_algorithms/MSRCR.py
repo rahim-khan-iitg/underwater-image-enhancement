@@ -123,11 +123,13 @@ def MSRCP(img, sigma_list, low_clip, high_clip):
 
     return img_msrcp
 
-image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test3.png"
+image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test14.png"
 img = cv2.imread(image_path)
 msrcr_image = MSRCR(img, [15, 80, 250], 125, 46, 125, 4, 0.01, 0.99)
 cv2.imshow("Original Image", img)
 cv2.imshow("Enhanced Image", msrcr_image)
+cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/msrcr_test14.png", msrcr_image)
 msrcp_image = MSRCP(img, [15, 80, 250], 0.01, 0.99)
 cv2.imshow("Enhanced Image using MSRCP", msrcp_image)
+cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/msrcp_test14.png", msrcp_image)
 cv2.waitKey(0)

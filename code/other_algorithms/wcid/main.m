@@ -58,3 +58,4 @@ enhancedImage = pyrReconstruct(fusedPyramid1);
 figure
 imshow(enhancedImage);
 title('Dehazed Image');
+imwrite(enhancedImage,'test14.jpg')

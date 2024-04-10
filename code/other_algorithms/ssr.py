@@ -70,13 +70,14 @@ def SSR(img, variance):
 
 variance_list=[15, 80, 30]
 variance=300
-image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test2.png"
+image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test14.png"
 img = cv2.imread(image_path)
 img_msr=MSR(img,variance_list)
 img_ssr=SSR(img, variance)
-
 cv2.imshow('Original', img)
 cv2.imshow('MSR', img_msr)
 cv2.imshow('SSR', img_ssr)
+cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/msr_test14.png", img_msr)
+cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/ssr_test14.png", img_ssr)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
