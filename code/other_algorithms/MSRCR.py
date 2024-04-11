@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import os
 
 def singleScaleRetinex(img, sigma):
 
@@ -123,13 +124,19 @@ def MSRCP(img, sigma_list, low_clip, high_clip):
 
     return img_msrcp
 
-image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test14.png"
-img = cv2.imread(image_path)
-msrcr_image = MSRCR(img, [15, 80, 250], 125, 46, 125, 4, 0.01, 0.99)
-cv2.imshow("Original Image", img)
-cv2.imshow("Enhanced Image", msrcr_image)
-cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/msrcr_test14.png", msrcr_image)
-msrcp_image = MSRCP(img, [15, 80, 250], 0.01, 0.99)
-cv2.imshow("Enhanced Image using MSRCP", msrcp_image)
-cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/msrcp_test14.png", msrcp_image)
-cv2.waitKey(0)
+
+if __name__ == "__main__":
+    input_dir = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw"
+    output_dir1 = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/msrcr"
+    output_dir2 = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/msrcp"
+    if not os.path.exists(output_dir1):
+        os.makedirs(output_dir1)
+    if not os.path.exists(output_dir2):
+        os.makedirs(output_dir2)
+    files=os.listdir(input_dir)
+    for file in files:
+        image = cv2.imread(os.path.join(input_dir, file))
+        enhanced_image = MSRCR(image,[15, 80, 250], 125, 46, 125, 4, 0.01, 0.99)
+        cv2.imwrite(os.path.join(output_dir1, file), enhanced_image)
+        enhanced_image = MSRCP(image, [15, 80, 250], 0.01, 0.99)
+        cv2.imwrite(os.path.join(output_dir2, file), enhanced_image)

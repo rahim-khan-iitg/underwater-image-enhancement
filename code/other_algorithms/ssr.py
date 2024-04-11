@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import os
 
 def singleScaleRetinex(img,variance):
     retinex = np.log10(img) - np.log10(cv2.GaussianBlur(img, (0, 0), variance))
@@ -68,16 +69,20 @@ def SSR(img, variance):
     return img_retinex
 
 
-variance_list=[15, 80, 30]
-variance=300
-image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test14.png"
-img = cv2.imread(image_path)
-img_msr=MSR(img,variance_list)
-img_ssr=SSR(img, variance)
-cv2.imshow('Original', img)
-cv2.imshow('MSR', img_msr)
-cv2.imshow('SSR', img_ssr)
-cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/msr_test14.png", img_msr)
-cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/ssr_test14.png", img_ssr)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+if __name__ == "__main__":
+    variance_list=[15, 80, 30]
+    variance=300
+    input_dir = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw"
+    output_dir1 = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/ssr"
+    output_dir2 = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/msr"
+    if not os.path.exists(output_dir1):
+        os.makedirs(output_dir1)
+    if not os.path.exists(output_dir2):
+        os.makedirs(output_dir2)
+    files=os.listdir(input_dir)
+    for file in files:
+        image = cv2.imread(os.path.join(input_dir, file))
+        img_msr=MSR(image,variance_list)
+        img_ssr=SSR(image, variance)
+        cv2.imwrite(os.path.join(output_dir1, file), img_ssr)
+        cv2.imwrite(os.path.join(output_dir2, file), img_msr)

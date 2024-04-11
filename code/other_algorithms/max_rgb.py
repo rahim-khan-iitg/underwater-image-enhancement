@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import os
 def max_rgb(image):
     red = image[:, :, 0]
     green = image[:, :, 1]
@@ -12,11 +13,13 @@ def max_rgb(image):
 
     return enhanced_image
 
-image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test14.png"
-image = cv2.imread(image_path)
-enhanced_image = max_rgb(image)
-cv2.imshow("Original Image", image)
-cv2.imshow("Enhanced Image", enhanced_image)
-cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/max_rgb_test14.png", enhanced_image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+if __name__ == "__main__":
+    input_dir = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw"
+    output_dir = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/max_rgb"
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    files=os.listdir(input_dir)
+    for file in files:
+        image = cv2.imread(os.path.join(input_dir, file))
+        enhanced_image = max_rgb(image)
+        cv2.imwrite(os.path.join(output_dir, file), enhanced_image)

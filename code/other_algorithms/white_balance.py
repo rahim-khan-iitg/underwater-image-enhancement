@@ -1,6 +1,7 @@
 import numpy as np
 from skimage import color
 import cv2
+import os
 
 def white_balance(image):
     lab = color.rgb2lab(image)
@@ -14,12 +15,13 @@ def white_balance(image):
 
     return balanced_image
 
-image_path = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw/test14.png"
-image = cv2.imread(image_path)
-enhanced_image = white_balance(image)
-cv2.imshow("Original Image", image)
-cv2.imshow("Enhanced Image", enhanced_image)
-cv2.imwrite("D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/white_balance_test14.png", enhanced_image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
+if __name__ == "__main__":
+    input_dir = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/raw"
+    output_dir = "D:/MSc Books/Sem 4/Project/underwater_image_enhancement/images/white_balance"
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    files=os.listdir(input_dir)
+    for file in files:
+        image = cv2.imread(os.path.join(input_dir, file))
+        enhanced_image = white_balance(image)
+        cv2.imwrite(os.path.join(output_dir, file), enhanced_image)
