@@ -3,6 +3,24 @@ from skimage import color
 import cv2
 import os
 
+def whiteBalance(im):
+    # Using Grayworld assumption color balancing.....
+
+    R_avg = np.mean(im[:,:,0])  # Getting the average of R, G, B components
+    G_avg = np.mean(im[:,:,1])
+    B_avg = np.mean(im[:,:,2])
+    RGB_avg = [R_avg, G_avg, B_avg]
+
+    gray_value = (R_avg + G_avg + B_avg) / 3  # By Grey world, average color of the whole image is gray
+    scaleValue = gray_value / RGB_avg  # By Grey world, scale value = gray / average of each color component
+
+    whiteBalanced = np.zeros_like(im)  # Create an empty array for the white balanced new image
+    whiteBalanced[:,:,0] = scaleValue[0] * im[:,:,0]  # R, G, B components of the new white balanced image
+    whiteBalanced[:,:,1] = scaleValue[1] * im[:,:,1]
+    whiteBalanced[:,:,2] = scaleValue[2] * im[:,:,2]
+
+    return whiteBalanced
+
 def white_balance(image):
     lab = color.rgb2lab(image)
     l, a, b = lab[:,:,0], lab[:,:,1], lab[:,:,2]
@@ -23,5 +41,5 @@ if __name__ == "__main__":
     files=os.listdir(input_dir)
     for file in files:
         image = cv2.imread(os.path.join(input_dir, file))
-        enhanced_image = white_balance(image)
+        enhanced_image = whiteBalance(image)
         cv2.imwrite(os.path.join(output_dir, file), enhanced_image)
