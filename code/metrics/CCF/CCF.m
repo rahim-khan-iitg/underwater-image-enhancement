@@ -42,7 +42,3 @@ function [quality] = CCF(im)
     quality = c(1)*(CCF_colorfulness) + c(2)*(CCF_contrast) + c(3)*(CCF_FADE)   
       
 end
-
-  
-
-

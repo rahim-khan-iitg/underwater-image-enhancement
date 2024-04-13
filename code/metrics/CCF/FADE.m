@@ -44,13 +44,13 @@ function [D, D_map] = FADE(I)
 
     %% Fog aware statistical feature extraction     
         % f1        
-            MSCN_var                = reshape(nanvar(im2col(MSCN, [ps ps], 'distinct')),[row col]/ps);        
+            MSCN_var                = reshape(var(im2col(MSCN, [ps ps], 'distinct')),[row col]/ps);        
         % f2,f3                    
             MSCN_V_pair_col         = im2col((MSCN.*circshift(MSCN,[1 0])),[ps ps], 'distinct'); %vertical 
             MSCN_V_pair_col_temp1   = MSCN_V_pair_col; MSCN_V_pair_col_temp1(MSCN_V_pair_col_temp1>0)=NaN;
             MSCN_V_pair_col_temp2   = MSCN_V_pair_col; MSCN_V_pair_col_temp2(MSCN_V_pair_col_temp2<0)=NaN;
-            MSCN_V_pair_L_var       = reshape(nanvar(MSCN_V_pair_col_temp1),[row col]/ps);          
-            MSCN_V_pair_R_var       = reshape(nanvar(MSCN_V_pair_col_temp2),[row col]/ps);          
+            MSCN_V_pair_L_var       = reshape(var(MSCN_V_pair_col_temp1),[row col]/ps);          
+            MSCN_V_pair_R_var       = reshape(var(MSCN_V_pair_col_temp2),[row col]/ps);          
         % f4        
             Mean_sigma              = reshape(mean(im2col(sigma, [ps ps], 'distinct')),[row col]/ps);    
         % f5        
@@ -78,7 +78,7 @@ function [D, D_map] = FADE(I)
             load('natural_fogfree_image_features_ps8.mat');        
         % test param for each patch                
             mu_fog_param_patch      = feat;
-            cov_fog_param_patch     = nanvar(feat')';
+            cov_fog_param_patch     = transpose(var(transpose(feat)));
         % Distance calculation - includes intermediate steps
             feature_size            = size(feat,2);
             mu_matrix               = repmat(mu_fogfreeparam, [size(feat,1),1]) - mu_fog_param_patch;         
@@ -94,7 +94,7 @@ function [D, D_map] = FADE(I)
             mu_transpose_cell       = num2cell(mu_matrix',1);     
         % foggy level computation
             distance_patch          = sqrt(cell2mat(cellfun(@mtimes,cellfun(@mrdivide,mu_cell,cov_cell, 'UniformOutput',0),mu_transpose_cell', 'UniformOutput',0)));          
-            Df                      = nanmean(distance_patch);   % Mean_distance_patch
+            Df                      = mean(distance_patch);   % Mean_distance_patch
             Df_map                  = reshape(distance_patch,[row,col]/ps);                                        
             clear mu_matrix cov_matrix mu_cell cov_cell mu_transpose_cell distance_patch
 
@@ -111,7 +111,7 @@ function [D, D_map] = FADE(I)
             mu_transpose_cell       = num2cell(mu_matrix',1);        
         % fog-free level computation
             distance_patch          = sqrt(cell2mat(cellfun(@mtimes,cellfun(@mrdivide,mu_cell,cov_cell, 'UniformOutput',0),mu_transpose_cell', 'UniformOutput',0)));     
-            Dff                     = nanmean(distance_patch);   % Mean_distance_patch                
+            Dff                     = mean(distance_patch);   % Mean_distance_patch                
             Dff_map                 = reshape(distance_patch,[row,col]/ps); 
             clear mu_matrix cov_matrix mu_cell cov_cell mu_transpose_cell 
     %% Perceptual fog density and density map
